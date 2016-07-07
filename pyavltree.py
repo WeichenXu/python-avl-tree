@@ -1,7 +1,5 @@
 import random, math
 
-
-
 def random_data_generator (max_r):
     for i in xrange(max_r):
         yield random.randint(0, max_r)
@@ -231,6 +229,9 @@ class AVLTree():
         if node_to_rebalance:
             self.rebalance (node_to_rebalance)
     
+    # new a node with key
+    # if root_ is empty, assign node to it
+    # otherwise, insert to root_
     def insert (self, key):
         new_node = Node (key)
         if not self.rootNode:
@@ -241,17 +242,15 @@ class AVLTree():
                 self.add_as_child (self.rootNode, new_node)
       
     def find_biggest(self, start_node):
-        node = start_node
-        while node.rightChild:
-            node = node.rightChild
-        return node 
+        while start_node.rightChild:
+            start_node = start_node.rightChild;
+        return start_node
     
     def find_smallest(self, start_node):
-        node = start_node
-        while node.leftChild:
-            node = node.leftChild
-        return node
-     
+        while start_node.leftChild:
+            start_node = start_node.leftChild
+        return start_node
+
     def inorder_non_recursive (self):
         node = self.rootNode
         retlst = []
