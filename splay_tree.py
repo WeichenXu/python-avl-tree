@@ -1,3 +1,4 @@
+from random import randint
 class Node():
     def __init__(self, key):
         self.key_ = key
@@ -20,7 +21,7 @@ class Node():
         return "["+self.key_+"]"
 
     # rotate right
-    def rotate_right(self):
+    def right_rotate(self):
         x = self.left_
         t2 = x.right_
         # perform the rotation
@@ -36,7 +37,7 @@ class Node():
         return x
 
     # rotate left
-    def rotate_left(self):
+    def left_rotate(self):
         y = self.right_
         t2 = y.left_
         # perform the rotation
@@ -49,7 +50,7 @@ class Node():
         # update height
         self.update_height()
         y.update_height()
-        return x
+        return y
 
 class Splay_Tree():
     def __init__(self):
@@ -94,12 +95,14 @@ class Splay_Tree():
                 new_node.right_ = self.root_.right_
                 if self.root_.right_ is not None:
                     self.root_.right_.parent_ = new_node
+                self.root_.right_ = None
                 self.root_.parent_ = new_node
             else:
                 new_node.left_ = self.root_.left_
                 new_node.right_ = self.root_
                 if self.root_.left_ is not None:
                     self.root_.left_.parent_ = new_node
+                self.root_.left_ = None
                 self.root_.parent_ = new_node
         self.root_ = new_node
         return self.root_, True
@@ -120,7 +123,7 @@ class Splay_Tree():
                 root.left_.left_ = self.splay(root.left_.left_, key)
                 root = root.right_rotate()
             # zig-zag
-            elif key > root.left_.key_ and root_.left_.right_ is not None:
+            elif key > root.left_.key_ and root.left_.right_ is not None:
                 root.left_.right_ = self.splay(root.left_.right_, key)
                 root.left_ = root.left_.left_rotate()
             if root.left_ is not None:
@@ -144,6 +147,11 @@ class Splay_Tree():
     def size(self):
         return self.size_;
 
+    # clean the map
+    def clear(self):
+        self.root_ = None
+        self.size_ = 0
+
 def in_order(node, ret_list = None):
     if ret_list is None:
         ret_list = []
@@ -156,6 +164,37 @@ def in_order(node, ret_list = None):
 
 if __name__ == "__main__":
     splay_map = Splay_Tree()
-    for i in range(1, 100):
-        splay_map.insert(i)
+    #for i in range(1, 100):
+    #    splay_map.insert( randint(-1000, 1000) )
+    
+    # zig-zig
+    splay_map.insert(1)
+    splay_map.insert(2)
+    splay_map.insert(0)
+
     print splay_map.in_order()
+    splay_map.clear()
+
+    # zig-zag
+    splay_map.insert(0)
+    splay_map.insert(2)
+    splay_map.insert(1)
+
+    print splay_map.in_order()
+    splay_map.clear()
+
+    # zag-zag
+    splay_map.insert(1)
+    splay_map.insert(0)
+    splay_map.insert(2)
+
+    print splay_map.in_order()
+    splay_map.clear()
+
+    # zag-zig
+    splay_map.insert(2)
+    splay_map.insert(0)
+    splay_map.insert(1)
+
+    print splay_map.in_order()
+    splay_map.clear()
